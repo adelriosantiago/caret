@@ -17,7 +17,14 @@
             return range2.toString().length;
           }
           //textarea
-          return target.selectionStart;
+          var selStart = target.selectionStart;
+          
+          if (target.type === "number") { //Workaround for this bug: https://stackoverflow.com/questions/21177489/selectionstart-selectionend-on-input-type-number-no-longer-allowed-in-chrome
+            target.type = "text";
+            selStart = target.selectionStart;
+            target.type = "number";
+          }
+          return selStart;
         }
         //IE<9
         if (document.selection) {
@@ -58,8 +65,15 @@
           window.getSelection().collapse(target.firstChild, pos);
         }
         //textarea
-        else
-          target.setSelectionRange(pos, pos);
+        else {
+          if (target.type === "number") { //Workaround for this bug: https://stackoverflow.com/questions/21177489/selectionstart-selectionend-on-input-type-number-no-longer-allowed-in-chrome
+            target.type = "text";
+            target.setSelectionRange(pos, pos);
+            target.type = "number";
+          } else {
+            target.setSelectionRange(pos, pos);
+          }
+        }
       }
       //IE<9
       else if (document.body.createTextRange) {
