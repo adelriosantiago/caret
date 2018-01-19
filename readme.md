@@ -1,4 +1,4 @@
-jQuery Caret
+jQuery Caret (Maintained, version with ISSUES tab enabled)
 ============
 
 - get the caret's position: `pos = $(textarea).caret()`
